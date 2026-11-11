@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>سما حبنا — لـ دودو</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg1:#040a22;--bg2:#0c2160;--ink:#eaf1ff;--soft:#a9bde8;--gold:#ffd95e;--blue:#6fb1ff;--rose:#ff6b81;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,var(--bg2),var(--bg1) 70%) fixed;color:var(--ink);font-family:'Cairo',Tahoma,sans-serif;line-height:1.9;overflow-x:hidden}
+canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#petals{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.petal{position:absolute;top:-40px;opacity:.7;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(112vh) rotate(360deg)}}
+section{position:relative;z-index:2;max-width:560px;margin:0 auto;padding:28px 22px}
+h1,h2{font-family:'Aref Ruqaa',serif;font-weight:700;margin:0}
+.hide{display:none!important}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.btn{display:inline-block;background:linear-gradient(135deg,#2f6bff,#6fb1ff);color:#fff;border:0;border-radius:99px;padding:12px 34px;font-size:1.1rem;font-weight:600;text-decoration:none;box-shadow:0 0 30px rgba(111,177,255,.5)}
+/* intro */
+#intro{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:18px}
+#intro h1{font-size:clamp(2.6rem,12vw,4.2rem);line-height:1.4;text-shadow:0 0 30px rgba(111,177,255,.7)}
+#intro p{color:var(--soft);margin:0;font-size:1.1rem}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.07);box-shadow:0 0 50px rgba(111,177,255,.9)}}
+/* sky */
+#sky h2{text-align:center;font-size:2rem}
+#sky .hint{text-align:center;color:var(--soft);margin:4px 0 0}
+#count{text-align:center;color:var(--gold);font-weight:600}
+#field{position:relative;height:70vh;min-height:430px;margin-top:10px}
+#lines{position:absolute;inset:0;width:100%;height:100%}
+#lines polyline{fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;opacity:.8;filter:drop-shadow(0 0 4px var(--gold))}
+#lines.on polyline{animation:draw 2.6s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.star{position:absolute;width:64px;height:64px;margin:-32px;background:none;border:0;padding:0;display:grid;place-items:center}
+.star i{width:18px;height:18px;border-radius:50%;background:#cfe0ff;box-shadow:0 0 14px 4px rgba(150,190,255,.7);animation:tw 2.6s ease-in-out infinite}
+.star:nth-child(odd) i{animation-delay:-1.2s}
+@keyframes tw{50%{transform:scale(.55);opacity:.6}}
+.star.lit i{background:var(--gold);box-shadow:0 0 26px 10px rgba(255,217,94,.75);animation:none;transform:scale(1.3)}
+.star span{position:absolute;top:100%;margin-top:-6px;font-size:.8rem;color:var(--gold);white-space:nowrap;opacity:0}
+.star.lit span{opacity:1}
+/* card */
+#veil{position:fixed;inset:0;z-index:20;background:rgba(2,6,22,.7);display:flex;align-items:flex-end;justify-content:center}
+#card{width:100%;max-width:560px;background:linear-gradient(180deg,#10286e,#081544);border:1px solid rgba(255,217,94,.5);border-radius:28px 28px 0 0;padding:28px 24px calc(28px + env(safe-area-inset-bottom,0px));text-align:center;animation:up .45s ease}
+@keyframes up{from{transform:translateY(60%);opacity:0}}
+#card small{color:var(--gold);font-size:1rem}
+#card h2{font-size:2rem;margin:4px 0 8px}
+#card p{margin:0 0 18px;font-size:1.15rem}
+/* finale */
+#finale{text-align:center;padding-top:50px}
+#finale h2{font-size:2.3rem;text-shadow:0 0 24px rgba(255,217,94,.5)}
+#timer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 8px}
+#timer div{background:rgba(111,177,255,.12);border:1px solid rgba(111,177,255,.35);border-radius:16px;padding:10px 4px}
+#timer b{display:block;font-size:1.7rem;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1.4}
+#timer small{color:var(--soft)}
+#today{color:var(--rose);font-weight:600;min-height:1.9em}
+#words{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:26px 0}
+#words span{font-family:'Aref Ruqaa',serif;font-size:1.5rem;padding:4px 18px;border-radius:99px;background:rgba(255,107,129,.14);border:1px solid rgba(255,107,129,.5);animation:bob 4s ease-in-out infinite}
+#words span:nth-child(2){animation-delay:-1.3s}#words span:nth-child(3){animation-delay:-2.6s}
+@keyframes bob{50%{transform:translateY(-8px)}}
+#letter{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:26px 22px;text-align:right;margin:10px 0 26px;min-height:200px}
+#letter h3{font-family:'Aref Ruqaa',serif;font-size:1.6rem;color:var(--gold);margin:0 0 10px}
+#msg{font-size:1.3rem;margin:0;min-height:7em}
+#msg::after{content:'|';animation:blink 1s steps(1) infinite;color:var(--gold)}
+@keyframes blink{50%{opacity:0}}
+#sign{text-align:left;font-family:'Aref Ruqaa',serif;font-size:1.6rem;color:var(--blue);margin-top:10px}
+.row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.ghost{background:none;border:1px solid var(--soft);color:var(--ink);box-shadow:none}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="petals" aria-hidden="true"></div>
+
+<section id="intro">
+  <h1>يا رضوى..<br>السما النهاردة<br>جواها حكايتنا</h1>
+  <p>سيف سابلك هدية في النجوم 💙</p>
+  <button class="btn pulse" id="go">افتحي الهدية</button>
+</section>
+
+<section id="sky" class="hide">
+  <h2>كل نجمة.. ذكرى</h2>
+  <p class="hint">المسي النجوم واحدة واحدة</p>
+  <p id="count">0 / 5</p>
+  <div id="field">
+    <svg id="lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline pathLength="1" points="28,10 70,26 35,46 72,66 40,86"/></svg>
+  </div>
+</section>
+
+<div id="veil" class="hide"><div id="card" role="dialog" aria-live="polite"><small id="cd"></small><h2 id="ct"></h2><p id="cp"></p><button class="btn" id="cx">كمّلي</button></div></div>
+
+<section id="finale" class="hide">
+  <h2>النجوم اتوصلت.. وطلعت إحنا</h2>
+  <p style="color:var(--soft);margin:6px 0 0">من يوم 10 يوليو 2022 وإحنا مع بعض</p>
+  <div id="timer"></div>
+  <div id="today"></div>
+  <div id="words"><span>دودو حبيبت بابا</span><span>يا حتة مني</span><span>يا عبيطة</span></div>
+  <div id="letter"><h3>رسالة من سيف لـ دودو</h3><p id="msg"></p><div id="sign">سيف 💙</div></div>
+  <div class="row">
+    <a class="btn" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=%D8%A8%D8%AD%D8%A8%D9%83+%D8%A3%D8%BA%D9%86%D9%8A%D8%A9">🎵 أغنيتنا: بحبك</a>
+    <button class="btn ghost" id="again">نعيد من الأول</button>
+  </div>
+</section>
+
+<script>
+const $=s=>document.querySelector(s);
+/* starfield */
+const cv=$('#bg'),cx=cv.getContext('2d');let W,H,S=[],sh=null;
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;S=Array.from({length:Math.round(W*H/5000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,p:Math.random()*6}))}
+rs();addEventListener('resize',rs);
+(function loop(t){cx.clearRect(0,0,W,H);
+ for(const s of S){cx.globalAlpha=.35+.65*Math.abs(Math.sin(t/900+s.p));cx.fillStyle='#dbe8ff';cx.beginPath();cx.arc(s.x,s.y,s.r,0,6.3);cx.fill()}
+ if(!sh&&Math.random()<.004)sh={x:Math.random()*W,y:Math.random()*H*.4,l:0};
+ if(sh){cx.globalAlpha=1;const g=cx.createLinearGradient(sh.x,sh.y,sh.x-90,sh.y-45);g.addColorStop(0,'#fff');g.addColorStop(1,'transparent');cx.strokeStyle=g;cx.lineWidth=2;cx.beginPath();cx.moveTo(sh.x,sh.y);cx.lineTo(sh.x-90,sh.y-45);cx.stroke();sh.x+=9;sh.y+=4.5;if(++sh.l>70)sh=null}
+ requestAnimationFrame(loop)})(0);
+/* flowers */
+const cols=['#ffd95e','#ff4d5e','#ffffff','#4d8dff'];
+function flower(c){let p='';for(let i=0;i<5;i++)p+=`<ellipse cx="20" cy="9" rx="6" ry="9" fill="${c}" transform="rotate(${i*72} 20 20)"/>`;return `<svg width="30" height="30" viewBox="0 0 40 40">${p}<circle cx="20" cy="20" r="5" fill="${c==='#ffd95e'?'#c77d00':'#ffd95e'}"/></svg>`}
+let fl=null;
+function startPetals(){if(fl)return;fl=setInterval(()=>{const d=document.createElement('div');d.className='petal';d.innerHTML=flower(cols[Math.random()*4|0]);d.style.left=Math.random()*100+'%';d.style.animationDuration=(7+Math.random()*6)+'s';d.style.transform='scale('+(.6+Math.random()*.8)+')';$('#petals').appendChild(d);setTimeout(()=>d.remove(),14000)},1100)}
+/* memories */
+const M=[
+ ['أول مرة','وإحنا صغيرين','اليوم اللي كلمتك فيه وإحنا صغيرين.. ماكنتش أعرف إن الكلمة دي هتبقى أول سطر في أحلى حكاية.',28,10],
+ ['10 يوليو 2022','عيد حبنا','اليوم اللي بقينا فيه لبعض رسمي. من هنا بدأ عيد حبنا، وكل سنة بيبقى أحلى.',70,26],
+ ['أول عيد','عدّى علينا سوا','أول عيد نقضيه مع بعض، وعرفت وقتها إن أي يوم معاكي هو عيد.',35,46],
+ ['7 أكتوبر 2024','رجعنا لبعض','رجعنا.. وعرفنا إن اللي بينا أقوى من أي حاجة.',72,66],
+ ['11 نوفمبر 2024','أول مرة أقولك وحشتيني','الكلمة اللي طلعت من قلبي من غير ما أحسب.. وكانت أصدق حاجة قلتها.',40,86]
+];
+let lit=0;
+function build(){const f=$('#field');f.querySelectorAll('.star').forEach(e=>e.remove());lit=0;$('#count').textContent='0 / 5';$('#lines').classList.remove('on');
+ M.forEach((m,i)=>{const b=document.createElement('button');b.className='star';b.style.left=m[3]+'%';b.style.top=m[4]+'%';b.setAttribute('aria-label',m[1]);b.innerHTML='<i></i><span>'+m[0]+'</span>';b.onclick=()=>open(i,b);f.appendChild(b)})}
+function open(i,b){const m=M[i];$('#cd').textContent=m[0];$('#ct').textContent=m[1];$('#cp').textContent=m[2];$('#veil').classList.remove('hide');$('#cx').focus();
+ if(!b.classList.contains('lit')){b.classList.add('lit');lit++;$('#count').textContent=lit+' / 5';if(lit===5)setTimeout(finish,900)}}
+$('#cx').onclick=()=>$('#veil').classList.add('hide');
+function finish(){$('#veil').classList.add('hide');$('#lines').classList.add('on');
+ setTimeout(()=>{$('#finale').classList.remove('hide');$('#finale').scrollIntoView({behavior:'smooth'});type()},3000)}
+/* timer */
+const T0=new Date(2022,6,10);
+function tick(){const n=new Date();let y=n.getFullYear()-2022,mo=n.getMonth()-6,d=n.getDate()-10;
+ if(d<0){mo--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate()}if(mo<0){y--;mo+=12}
+ const ms=n-T0,h=Math.floor(ms/36e5)%24,mi=Math.floor(ms/6e4)%60,s=Math.floor(ms/1e3)%60,days=Math.floor(ms/864e5);
+ const c=(v,l)=>`<div><b>${v.toLocaleString('ar-EG')}</b><small>${l}</small></div>`;
+ $('#timer').innerHTML=c(y,'سنة')+c(mo,'شهر')+c(d,'يوم')+c(h,'ساعة')+c(mi,'دقيقة')+c(s,'ثانية');
+ $('#today').textContent=(n.getDate()===11&&n.getMonth()===10)?'النهاردة 11/11.. فكرة إنك وحشتيني وقتها لسه عايشة 💙':(n.getDate()===10&&n.getMonth()===6)?'كل سنة وإحنا طيبين يا دودو.. النهاردة عيد حبنا 🌹':days.toLocaleString('ar-EG')+' يوم من الحب'}
+setInterval(tick,1000);tick();
+/* typewriter */
+const TXT='بحبك يا نور عينيا، وربنا يخليكي وميحرمنيش منك أبدًا، ونفضل مع بعض وجمب بعض سوا، وتسنديني. ( بحبك )';
+let tw=null;
+function type(){clearInterval(tw);const el=$('#msg');el.textContent='';let i=0;tw=setInterval(()=>{el.textContent=TXT.slice(0,++i);if(i>=TXT.length)clearInterval(tw)},75)}
+/* flow */
+$('#go').onclick=()=>{$('#intro').classList.add('hide');$('#sky').classList.remove('hide');build();startPetals();scrollTo(0,0)};
+$('#again').onclick=()=>{$('#finale').classList.add('hide');build();scrollTo({top:0,behavior:'smooth'})};
+</script>
+</body>
+</html>
